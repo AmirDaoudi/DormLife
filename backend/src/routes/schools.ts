@@ -8,7 +8,9 @@ const router = Router();
 // Get all schools (public route for registration)
 router.get('/', async (req, res) => {
   try {
+    logger.info('📚 Fetching schools from database...');
     const schools = await SchoolModel.findAll();
+    logger.info('✅ Schools fetched successfully:', schools.length);
     
     res.json({
       success: true,
@@ -20,7 +22,7 @@ router.get('/', async (req, res) => {
       })),
     });
   } catch (error) {
-    logger.error('Error fetching schools:', error);
+    logger.error('❌ Error fetching schools:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to fetch schools',
