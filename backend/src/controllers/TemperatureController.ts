@@ -57,6 +57,7 @@ export class TemperatureController {
   static async submitVote(req: Request, res: Response): Promise<void> {
     try {
       const { temperature, zone } = req.body;
+      logger.info('🗳️ Temperature vote attempt:', { userId: req.user.id, temperature, zone, schoolId: req.user.schoolId });
       
       // Get default zone for user's school if none specified
       let zoneId = zone;
@@ -91,9 +92,10 @@ export class TemperatureController {
       }
 
       // Submit vote
+      logger.info('🗳️ Submitting vote to database:', { userId: req.user.id, zoneId, temperature });
       const vote = await TemperatureModel.submitVote(req.user.id, zoneId, temperature);
 
-      logger.info(`Temperature vote submitted: ${req.user.email} voted ${temperature}°F`);
+      logger.info(`✅ Temperature vote submitted: ${req.user.email} voted ${temperature}°F`);
 
       res.json({
         success: true,
