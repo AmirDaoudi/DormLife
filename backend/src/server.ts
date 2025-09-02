@@ -17,6 +17,8 @@ import logger from './utils/logger';
 import authRoutes from './routes/auth';
 import schoolRoutes from './routes/schools';
 import temperatureRoutes from './routes/temperature';
+import userRoutes from './routes/users';
+import requestRoutes from './routes/requests';
 
 // Load environment variables
 dotenv.config();
@@ -135,10 +137,10 @@ class DormLifeServer {
     this.app.use('/api/auth', authRoutes);
     this.app.use('/api/schools', schoolRoutes);
     this.app.use('/api/temperature', temperatureRoutes);
+    this.app.use('/api/user', userRoutes);
+    this.app.use('/api/requests', requestRoutes);
 
     // TODO: Add more routes
-    // this.app.use('/api/users', userRoutes);
-    // this.app.use('/api/requests', requestRoutes);
     // this.app.use('/api/announcements', announcementRoutes);
   }
 
