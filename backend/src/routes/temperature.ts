@@ -6,8 +6,8 @@ import { temperatureSchemas, paginationSchema } from '../middleware/validation';
 
 const router = Router();
 
-// All temperature routes require authentication and verification
-router.use(authenticate, requireVerification);
+// All temperature routes require authentication only (skip verification for now)
+router.use(authenticate);
 
 // Get current temperature data
 router.get('/current', TemperatureController.getCurrentTemperature);
