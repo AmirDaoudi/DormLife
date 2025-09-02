@@ -28,12 +28,15 @@ class DormLifeServer {
   private port: number;
 
   constructor() {
+    console.log('🔧 Initializing DormLife server...');
     this.app = express();
     this.port = parseInt(process.env.PORT || '3000');
+    console.log('📡 Port:', this.port);
     
     this.initializeMiddleware();
     this.initializeRoutes();
     this.initializeErrorHandling();
+    console.log('✅ Server initialized successfully');
   }
 
   private initializeMiddleware(): void {
@@ -206,7 +209,10 @@ class DormLifeServer {
 // Start server if this file is run directly
 if (require.main === module) {
   const server = new DormLifeServer();
-  server.start();
+  server.start().catch((error) => {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  });
 }
 
 export default DormLifeServer;
