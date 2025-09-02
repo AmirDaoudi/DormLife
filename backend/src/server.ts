@@ -101,6 +101,27 @@ class DormLifeServer {
         },
       });
     });
+
+    // Simple database test
+    this.app.get('/db-test', async (req, res) => {
+      try {
+        console.log('🧪 Testing database connection...');
+        const result = await db.query('SELECT NOW() as current_time');
+        console.log('✅ Database test successful:', result.rows[0]);
+        res.json({
+          success: true,
+          message: 'Database connection successful',
+          timestamp: result.rows[0].current_time,
+        });
+      } catch (error) {
+        console.error('❌ Database test failed:', error);
+        res.status(500).json({
+          success: false,
+          error: 'Database connection failed',
+          details: error.message,
+        });
+      }
+    });
   }
 
   private initializeRoutes(): void {
