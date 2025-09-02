@@ -197,10 +197,10 @@ class DormLifeServer {
         }
       });
 
-      // Database temporarily disabled to fix crash loop
-      logger.info('⚠️ Database connection temporarily disabled');
-      logger.info('DATABASE_URL exists:', !!process.env.DATABASE_URL);
-      logger.info('NODE_ENV:', process.env.NODE_ENV);
+      // Connect to database
+      logger.info('🗄️ Connecting to database...');
+      await db.connect();
+      logger.info('✅ Database connected successfully');
 
       // Setup graceful shutdown
       gracefulShutdown(this.server);
