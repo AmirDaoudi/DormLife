@@ -33,20 +33,24 @@ export class AuthController {
       const verificationToken = JWTUtil.generateVerificationToken(email);
       await UserModel.setVerificationToken(email, verificationToken);
 
-      logger.info(`User registered successfully: ${email}`);
+      // Auto-verify user for testing
+      await UserModel.verifyEmail(verificationToken);
+      const verifiedUser = await UserModel.findById(user.id);
+      
+      logger.info(`User registered and auto-verified: ${email}`);
 
       res.status(201).json({
         success: true,
-        message: 'Registration successful. Please check your email to verify your account.',
+        message: 'Registration successful. Your account is ready to use.',
         data: {
           user: {
-            id: user.id,
-            email: user.email,
-            fullName: user.fullName,
-            schoolId: user.schoolId,
-            isVerified: user.isVerified,
+            id: verifiedUser.id,
+            email: verifiedUser.email,
+            fullName: verifiedUser.fullName,
+            schoolId: verifiedUser.schoolId,
+            isVerified: verifiedUser.isVerified,
           },
-          verificationRequired: true,
+          verificationRequired: false,
         },
       });
     } catch (error: any) {

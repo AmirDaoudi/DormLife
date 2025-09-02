@@ -141,18 +141,18 @@ export const userSchemas = {
 export const temperatureSchemas = {
   vote: Joi.object({
     temperature: Joi.number().min(65).max(80).required(),
-    zone: Joi.string().uuid().optional(),
+    zone: Joi.string().optional(), // Allow any string, not just UUID
   }),
 };
 
 export const requestSchemas = {
   create: Joi.object({
-    categoryId: Joi.string().uuid().required(),
+    category: Joi.string().required(), // Accept any string for category
     title: Joi.string().min(5).max(255).required(),
     description: Joi.string().min(10).max(2000).required(),
     priority: Joi.string().valid('low', 'medium', 'high', 'urgent').default('medium'),
     isAnonymous: Joi.boolean().default(false),
-    photos: Joi.array().items(Joi.string().uri()).max(5).optional(),
+    photos: Joi.array().items(Joi.string()).max(5).optional(),
   }),
 
   update: Joi.object({
