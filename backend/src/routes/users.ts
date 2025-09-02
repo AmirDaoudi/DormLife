@@ -52,7 +52,7 @@ router.get('/profile', async (req, res) => {
 // Update user profile
 router.put('/profile', async (req, res) => {
   try {
-    const updatedUser = await UserModel.update(req.user.id, req.body);
+    const updatedUser = await UserModel.updateById(req.user.id, req.body);
     
     res.json({
       success: true,
