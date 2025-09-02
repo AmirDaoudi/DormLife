@@ -69,9 +69,12 @@ export class AuthController {
   static async login(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
+      logger.info(`🔐 Login attempt for: ${email}`);
 
       // Find user
+      logger.info('🔍 Finding user in database...');
       const user = await UserModel.findByEmail(email);
+      logger.info(`👤 User found: ${user ? 'Yes' : 'No'}`);
       if (!user) {
         res.status(401).json({
           success: false,
@@ -81,7 +84,9 @@ export class AuthController {
       }
 
       // Verify password
+      logger.info('🔑 Verifying password...');
       const isValidPassword = await UserModel.verifyPassword(user, password);
+      logger.info(`✅ Password valid: ${isValidPassword}`);
       if (!isValidPassword) {
         res.status(401).json({
           success: false,
@@ -100,6 +105,7 @@ export class AuthController {
       }
 
       // Generate tokens
+      logger.info('🎫 Generating JWT tokens...');
       const tokenPayload = {
         userId: user.id,
         email: user.email,
@@ -108,6 +114,7 @@ export class AuthController {
       };
 
       const { token, refreshToken } = JWTUtil.generateTokens(tokenPayload);
+      logger.info('✅ Tokens generated successfully');
 
       // Update last login
       await UserModel.updateLastLogin(user.id);
