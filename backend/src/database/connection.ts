@@ -53,7 +53,8 @@ class DatabaseConnection {
 
     this.pool.on('error', (err) => {
       logger.error('PostgreSQL client error:', err);
-      process.exit(-1);
+      // Don't exit - let the server continue running
+      // process.exit(-1);
     });
   }
 
