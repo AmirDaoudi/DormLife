@@ -8,7 +8,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 
 // Import middleware and utilities
-// import { db } from './database/connection';
+import { db } from './database/connection';
 import { errorHandler, notFoundHandler, gracefulShutdown } from './middleware/errorHandler';
 import { loggerStream } from './utils/logger';
 import logger from './utils/logger';
@@ -102,13 +102,31 @@ class DormLifeServer {
       });
     });
 
-    // Simple test endpoint
+    // Database test endpoint
     this.app.get('/db-test', async (req, res) => {
-      res.json({
-        success: true,
-        message: 'Server is running (database temporarily disabled)',
-        timestamp: new Date().toISOString(),
-      });
+      try {
+        console.log('🧪 Testing database connection...');
+        console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL);
+        console.log('DATABASE_URL starts with:', process.env.DATABASE_URL?.substring(0, 20) + '...');
+        
+        const result = await db.query('SELECT NOW() as current_time, version() as pg_version');
+        console.log('✅ Database test successful');
+        
+        res.json({
+          success: true,
+          message: 'Database connection successful',
+          timestamp: result.rows[0].current_time,
+          postgres_version: result.rows[0].pg_version.split(' ')[0],
+        });
+      } catch (error) {
+        console.error('❌ Database test failed:', error);
+        res.status(500).json({
+          success: false,
+          error: 'Database connection failed',
+          details: error.message,
+          code: error.code,
+        });
+      }
     });
   }
 
