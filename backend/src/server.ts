@@ -8,7 +8,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 
 // Import middleware and utilities
-import { db } from './database/connection';
+// import { db } from './database/connection';
 import { errorHandler, notFoundHandler, gracefulShutdown } from './middleware/errorHandler';
 import { loggerStream } from './utils/logger';
 import logger from './utils/logger';
@@ -102,25 +102,13 @@ class DormLifeServer {
       });
     });
 
-    // Simple database test
+    // Simple test endpoint
     this.app.get('/db-test', async (req, res) => {
-      try {
-        console.log('🧪 Testing database connection...');
-        const result = await db.query('SELECT NOW() as current_time');
-        console.log('✅ Database test successful:', result.rows[0]);
-        res.json({
-          success: true,
-          message: 'Database connection successful',
-          timestamp: result.rows[0].current_time,
-        });
-      } catch (error) {
-        console.error('❌ Database test failed:', error);
-        res.status(500).json({
-          success: false,
-          error: 'Database connection failed',
-          details: error.message,
-        });
-      }
+      res.json({
+        success: true,
+        message: 'Server is running (database temporarily disabled)',
+        timestamp: new Date().toISOString(),
+      });
     });
   }
 
@@ -191,23 +179,10 @@ class DormLifeServer {
         }
       });
 
-      // Try to connect to database after server is running
-      try {
-        logger.info('Connecting to database...');
-        logger.info('DATABASE_URL exists:', !!process.env.DATABASE_URL);
-        logger.info('NODE_ENV:', process.env.NODE_ENV);
-        await db.connect();
-
-        // Run migrations
-        logger.info('Running database migrations...');
-        const runMigrations = await import('./database/migrate');
-        await runMigrations.default();
-        
-        logger.info('✅ Database connected and migrations complete');
-      } catch (dbError) {
-        logger.error('⚠️  Database connection failed, but server will continue running:', dbError);
-        logger.info('API will work but database operations will fail');
-      }
+      // Database temporarily disabled to fix crash loop
+      logger.info('⚠️ Database connection temporarily disabled');
+      logger.info('DATABASE_URL exists:', !!process.env.DATABASE_URL);
+      logger.info('NODE_ENV:', process.env.NODE_ENV);
 
       // Setup graceful shutdown
       gracefulShutdown(this.server);
