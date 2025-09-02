@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { authenticate } from '../middleware/auth';
+import { validate } from '../middleware/validation';
+import { requestSchemas } from '../middleware/validation';
 import logger from '../utils/logger';
 
 const router = Router();
@@ -27,7 +29,7 @@ router.get('/', async (req, res) => {
 });
 
 // Create request
-router.post('/', async (req, res) => {
+router.post('/', validate(requestSchemas.create), async (req, res) => {
   try {
     logger.info('Creating request (mock response for now)');
     
