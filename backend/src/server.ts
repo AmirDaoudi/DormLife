@@ -153,19 +153,10 @@ class DormLifeServer {
 
   public async start(): Promise<void> {
     try {
-      // Connect to database
-      logger.info('Connecting to database...');
-      await db.connect();
-
-      // Run migrations
-      logger.info('Running database migrations...');
-      const runMigrations = await import('./database/migrate');
-      await runMigrations.default();
-
-      // Initialize Socket.IO
+      // Initialize Socket.IO first
       this.initializeSocketIO();
 
-      // Start server
+      // Start server first - this will allow health checks to work
       this.server.listen(this.port, () => {
         logger.info(`🚀 DormLife API server running on port ${this.port}`);
         logger.info(`📱 Environment: ${process.env.NODE_ENV}`);
@@ -175,6 +166,22 @@ class DormLifeServer {
           logger.info(`📖 API Documentation: http://localhost:${this.port}/`);
         }
       });
+
+      // Try to connect to database after server is running
+      try {
+        logger.info('Connecting to database...');
+        await db.connect();
+
+        // Run migrations
+        logger.info('Running database migrations...');
+        const runMigrations = await import('./database/migrate');
+        await runMigrations.default();
+        
+        logger.info('✅ Database connected and migrations complete');
+      } catch (dbError) {
+        logger.error('⚠️  Database connection failed, but server will continue running:', dbError);
+        logger.info('API will work but database operations will fail');
+      }
 
       // Setup graceful shutdown
       gracefulShutdown(this.server);
