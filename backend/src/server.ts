@@ -170,6 +170,8 @@ class DormLifeServer {
       // Try to connect to database after server is running
       try {
         logger.info('Connecting to database...');
+        logger.info('DATABASE_URL exists:', !!process.env.DATABASE_URL);
+        logger.info('NODE_ENV:', process.env.NODE_ENV);
         await db.connect();
 
         // Run migrations
