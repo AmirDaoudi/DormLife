@@ -108,7 +108,7 @@ export const authSchemas = {
     roomNumber: Joi.string().pattern(/^[2-5]\d{2}$/).optional().messages({
       'string.pattern.base': 'Room number must be between 200-599'
     }),
-    graduationYear: Joi.number().integer().min(2025).max(2030).optional(),
+    graduationYear: Joi.number().integer().min(2025).max(2029).optional(),
     schoolId: Joi.string().uuid().required(),
   }),
 
