@@ -21,7 +21,9 @@ export class UserModel {
     
     if (graduationYear && roomNumber) {
       const currentYear = new Date().getFullYear();
-      gradeLevel = Math.max(1, Math.min(4, graduationYear - currentYear));
+      // Calculate grade level: Senior=4, Junior=3, Sophomore=2, Freshman=1
+      // 2026 = Senior, 2027 = Junior, 2028 = Sophomore, 2029 = Freshman
+      gradeLevel = Math.max(1, Math.min(4, 5 - (graduationYear - currentYear)));
       const gradeNames = ['', 'Freshman', 'Sophomore', 'Junior', 'Senior'];
       year = gradeNames[gradeLevel];
       
