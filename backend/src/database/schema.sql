@@ -26,6 +26,7 @@ CREATE TABLE users (
     room_number VARCHAR(50),
     profile_photo_url VARCHAR(500),
     year VARCHAR(50),
+    graduation_year INTEGER,
     emergency_contact VARCHAR(255),
     school_id UUID REFERENCES schools(id) ON DELETE CASCADE,
     role VARCHAR(50) DEFAULT 'student' CHECK (role IN ('student', 'admin', 'staff')),
