@@ -17,6 +17,9 @@ export interface RequestData {
   resolved_at?: Date;
   created_at?: Date;
   updated_at?: Date;
+  // Additional fields from JOIN queries
+  full_name?: string;
+  room_number?: string;
 }
 
 export class RequestModel {
