@@ -31,7 +31,14 @@ router.get('/', async (req, res) => {
 // Create request
 router.post('/', validate(requestSchemas.create), async (req, res) => {
   try {
-    logger.info('Creating request (mock response for now)');
+    logger.info('📝 Creating request:', { 
+      body: req.body, 
+      user: req.user?.id,
+      headers: {
+        authorization: req.headers.authorization ? 'Bearer [TOKEN]' : 'None',
+        contentType: req.headers['content-type']
+      }
+    });
     
     // Mock response for now
     const mockRequest = {
@@ -43,7 +50,7 @@ router.post('/', validate(requestSchemas.create), async (req, res) => {
       isAnonymous: req.body.isAnonymous,
       status: 'pending',
       userId: req.user.id,
-      upvotes: 0,
+      upvotes: [],
       createdAt: new Date().toISOString(),
     };
     

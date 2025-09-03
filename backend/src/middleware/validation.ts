@@ -4,6 +4,13 @@ import logger from '../utils/logger';
 
 export const validate = (schema: Joi.ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction): void => {
+    logger.info('🔍 Validating request:', { 
+      body: req.body, 
+      url: req.url, 
+      method: req.method,
+      user: req.user?.id 
+    });
+
     const { error, value } = schema.validate(req.body, {
       abortEarly: false,
       stripUnknown: true,
@@ -16,7 +23,7 @@ export const validate = (schema: Joi.ObjectSchema) => {
         value: detail.context?.value,
       }));
 
-      logger.warn('Validation error:', { errors, body: req.body });
+      logger.error('❌ Validation failed:', { errors, body: req.body, url: req.url });
 
       res.status(400).json({
         success: false,
@@ -25,6 +32,8 @@ export const validate = (schema: Joi.ObjectSchema) => {
       });
       return;
     }
+
+    logger.info('✅ Validation passed:', { validatedBody: value, url: req.url });
 
     // Replace req.body with validated and sanitized data
     req.body = value;
