@@ -6,6 +6,7 @@ export interface User {
   roomNumber?: string;
   profilePhotoUrl?: string;
   year?: string;
+  graduationYear?: number;
   emergencyContact?: string;
   schoolId: string;
   role: 'student' | 'admin' | 'staff';

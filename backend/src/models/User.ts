@@ -316,6 +316,7 @@ export class UserModel {
       roomNumber: dbUser.room_number,
       profilePhotoUrl: dbUser.profile_photo_url,
       year: dbUser.year,
+      graduationYear: dbUser.graduation_year,
       emergencyContact: dbUser.emergency_contact,
       schoolId: dbUser.school_id,
       role: dbUser.role,
