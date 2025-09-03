@@ -105,10 +105,10 @@ export const authSchemas = {
     email: Joi.string().email().lowercase().required(),
     password: Joi.string().min(8).required(),
     fullName: Joi.string().min(2).max(255).required(),
-    roomNumber: Joi.string().pattern(/^[2-5]\d{2}$/).required().messages({
+    roomNumber: Joi.string().pattern(/^[2-5]\d{2}$/).optional().messages({
       'string.pattern.base': 'Room number must be between 200-599'
     }),
-    graduationYear: Joi.number().integer().min(2025).max(2030).required(),
+    graduationYear: Joi.number().integer().min(2025).max(2030).optional(),
     schoolId: Joi.string().uuid().required(),
   }),
 

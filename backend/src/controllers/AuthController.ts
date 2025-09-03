@@ -21,13 +21,13 @@ export class AuthController {
         return;
       }
 
-      // Create user with room and graduation year
+      // Create user with room and graduation year (if provided)
       const user = await UserModel.create({
         email,
         password,
         fullName,
-        roomNumber,
-        graduationYear,
+        roomNumber: roomNumber || undefined,
+        graduationYear: graduationYear || undefined,
         schoolId,
       });
 
