@@ -8,18 +8,38 @@ export class UserModel {
     email: string;
     password: string;
     fullName: string;
+    roomNumber: string;
+    graduationYear: number;
     schoolId: string;
     role?: string;
   }): Promise<User> {
-    const { email, password, fullName, schoolId, role = 'student' } = userData;
+    const { email, password, fullName, roomNumber, graduationYear, schoolId, role = 'student' } = userData;
+    
+    // Calculate grade level based on graduation year
+    const currentYear = new Date().getFullYear();
+    const gradeLevel = Math.max(1, Math.min(4, graduationYear - currentYear));
+    const gradeNames = ['', 'Freshman', 'Sophomore', 'Junior', 'Senior'];
+    const year = gradeNames[gradeLevel];
+    
+    // Determine floor based on room number and grade level
+    const roomNum = parseInt(roomNumber);
+    let floor = Math.floor(roomNum / 100);
+    
+    // Validate floor assignment matches grade level
+    if ((floor === 2 && gradeLevel !== 1) || 
+        (floor === 3 && gradeLevel !== 2) || 
+        (floor === 4 && gradeLevel !== 3) || 
+        (floor === 5 && gradeLevel !== 4)) {
+      throw new Error(`Room ${roomNumber} is not available for ${year} students`);
+    }
     
     try {
       const saltRounds = parseInt(process.env.BCRYPT_ROUNDS || '12');
       const passwordHash = await bcrypt.hash(password, saltRounds);
       
       const query = `
-        INSERT INTO users (email, password_hash, full_name, school_id, role, preferences)
-        VALUES ($1, $2, $3, $4, $5, $6)
+        INSERT INTO users (email, password_hash, full_name, room_number, year, graduation_year, school_id, role, preferences)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         RETURNING *
       `;
       
@@ -35,6 +55,9 @@ export class UserModel {
         email.toLowerCase(),
         passwordHash,
         fullName,
+        roomNumber,
+        year,
+        graduationYear,
         schoolId,
         role,
         JSON.stringify(defaultPreferences)
