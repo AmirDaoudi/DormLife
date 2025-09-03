@@ -9,7 +9,7 @@ import crypto from 'crypto';
 export class AuthController {
   static async register(req: Request, res: Response): Promise<void> {
     try {
-      const { email, password, fullName, schoolId } = req.body;
+      const { email, password, fullName, roomNumber, graduationYear, schoolId } = req.body;
 
       // Check if school exists
       const school = await SchoolModel.findById(schoolId);
@@ -21,11 +21,13 @@ export class AuthController {
         return;
       }
 
-      // Create user
+      // Create user with room and graduation year
       const user = await UserModel.create({
         email,
         password,
         fullName,
+        roomNumber,
+        graduationYear,
         schoolId,
       });
 
