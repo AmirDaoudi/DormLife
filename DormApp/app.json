@@ -1,29 +1,65 @@
 {
   "expo": {
-    "name": "DormApp",
-    "slug": "DormApp",
+    "name": "DormLife - Georgetown Prep",
+    "slug": "dormlife-georgetown",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "description": "The official dormitory management app for Georgetown Preparatory School students and staff.",
+    "keywords": ["georgetown", "prep", "dormitory", "student", "boarding", "school"],
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#1B365D"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.georgetownprep.dormlife",
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "NSCameraUsageDescription": "DormLife needs camera access to add photos to requests and update your profile picture.",
+        "NSPhotoLibraryUsageDescription": "DormLife needs photo library access to select images for requests and profile pictures.",
+        "NSFaceIDUsageDescription": "DormLife uses Face ID for secure and convenient authentication.",
+        "NSLocationWhenInUseUsageDescription": "DormLife uses location to verify you're in your dorm building."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FFFFFF"
       },
+      "package": "com.dormlife.app",
+      "versionCode": 1,
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "USE_FINGERPRINT",
+        "USE_BIOMETRIC",
+        "ACCESS_FINE_LOCATION"
+      ],
       "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-local-authentication",
+      "expo-camera",
+      "expo-image-picker",
+      "expo-notifications",
+      "expo-location"
+    ],
+    "notification": {
+      "icon": "./assets/icon.png",
+      "color": "#1B365D"
+    },
+    "privacy": "public",
+    "category": "education"
   }
 }
