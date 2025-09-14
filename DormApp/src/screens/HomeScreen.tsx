@@ -81,7 +81,7 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
       subtitle: 'Account',
       icon: 'person-circle' as keyof typeof Ionicons.glyphMap,
       color: Colors.success,
-      action: () => navigation.navigate('ProfileTab' as never),
+      action: () => navigation.jumpTo('ProfileTab'),
     },
     {
       id: 5,
@@ -97,7 +97,7 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
       subtitle: 'Directory',
       icon: 'people' as keyof typeof Ionicons.glyphMap,
       color: '#8E44AD',
-      action: () => navigation.navigate('ProfileTab' as never),
+      action: () => navigation.jumpTo('ProfileTab'),
     },
   ];
 
@@ -119,7 +119,7 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
           </View>
           <TouchableOpacity 
             style={styles.profileButton}
-            onPress={() => navigation.navigate('ProfileTab' as never)}
+            onPress={() => navigation.jumpTo('ProfileTab')}
           >
             <View style={styles.profileImageSmall}>
               <Text style={styles.profileInitial}>

@@ -71,8 +71,10 @@ export default function AdminDashboardScreen({ navigation }: { navigation: any }
 
   const handleStatusUpdate = async (requestId: string, newStatus: Request['status'], customNote?: string) => {
     const statusMessages = {
+      pending: 'Request is pending review',
       in_progress: 'Request assigned to maintenance team',
-      resolved: customNote || 'Issue has been resolved successfully'
+      resolved: customNote || 'Issue has been resolved successfully',
+      rejected: 'Request has been rejected'
     };
 
     try {
@@ -147,7 +149,7 @@ export default function AdminDashboardScreen({ navigation }: { navigation: any }
           <GeorgetownLogo size="small" variant="dark" showAppName={false} />
           <TouchableOpacity 
             style={styles.profileButton}
-            onPress={() => navigation.navigate('ProfileTab' as never)}
+            onPress={() => navigation.jumpTo('ProfileTab')}
           >
             <View style={styles.adminBadge}>
               <Ionicons name="shield-checkmark" size={20} color={Colors.textOnPrimary} />

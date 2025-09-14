@@ -157,7 +157,10 @@ const requestsSlice = createSlice({
       })
       .addCase(fetchRequests.fulfilled, (state, action) => {
         state.loading = false;
-        state.requests = action.payload;
+        state.requests = action.payload.map((request: any) => ({
+          ...request,
+          upvotes: Array.isArray(request.upvotes) ? request.upvotes : []
+        }));
       })
       .addCase(fetchRequests.rejected, (state, action) => {
         state.loading = false;
@@ -171,9 +174,13 @@ const requestsSlice = createSlice({
       })
       .addCase(createRequest.fulfilled, (state, action) => {
         state.loading = false;
-        state.requests.unshift(action.payload);
+        const requestWithUpvotes = {
+          ...action.payload,
+          upvotes: Array.isArray(action.payload.upvotes) ? action.payload.upvotes : []
+        };
+        state.requests.unshift(requestWithUpvotes);
         if (!action.payload.isAnonymous) {
-          state.userRequests.unshift(action.payload);
+          state.userRequests.unshift(requestWithUpvotes);
         }
       })
       .addCase(createRequest.rejected, (state, action) => {
@@ -227,5 +234,4 @@ const requestsSlice = createSlice({
 });
 
 export const { clearError } = requestsSlice.actions;
-export { fetchRequests, createRequest, toggleUpvote, updateRequestStatus };
 export default requestsSlice.reducer;
