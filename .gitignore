@@ -25,3 +25,15 @@ build/
 ehthumbs.db
 Thumbs.db
 
+.env.save
+.env.*.local
+
+# Local tooling and signing material
+.claude/
+.expo/
+credentials.json
+ExportOptions.plist
+*.mobileprovision
+*.p12
+DormApp/ios/Pods/
+DormApp/ios/build/
